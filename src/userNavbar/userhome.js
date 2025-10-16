@@ -11,7 +11,7 @@ const YearbookCard = ({ yearbook }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    fetch(`/yearbook/${id}/images`)
+    fetch(`https://server-1-gjvd.onrender.com/yearbook/${id}/images`)
       .then((res) => res.json())
       .then((images) => {
         if (images.length > 0) {
@@ -63,7 +63,7 @@ const YearbookViewer = ({ yearbook, onClose }) => {
 
   // Fetch images
   useEffect(() => {
-    fetch(`/yearbook/${yearbook.id}/images`)
+    fetch(`https://server-1-gjvd.onrender.com/yearbook/${yearbook.id}/images`)
       .then((res) => res.json())
       .then((data) => {
         setImages(data);
@@ -240,7 +240,7 @@ export default function Dashboard() {
 
   // ✅ Fetch yearbooks
   useEffect(() => {
-    fetch("/yearbooks")
+    fetch("https://server-1-gjvd.onrender.com/yearbooks")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) setYearbooks(data);
