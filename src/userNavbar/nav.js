@@ -31,7 +31,7 @@ const YearbookViewer = ({ yearbook, onClose }) => {
     const yearbookId = yearbook.related_id;
     if (!yearbookId) return;
 
-    fetch(`/yearbook/${yearbookId}/images`)
+    fetch(`https://server-1-gjvd.onrender.com/yearbook/${yearbookId}/images`)
       .then((res) => res.json())
       .then((data) => setImages(data))
       .catch((err) => console.error("Error fetching images:", err));
