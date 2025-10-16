@@ -42,7 +42,7 @@ const currentUser = user;
 
 const checkSession = async () => {
     try {
-      const res = await fetch("/api/session", { credentials: "include" });
+      const res = await fetch("https://server-1-gjvd.onrender.com/api/session", { credentials: "include" });
       const data = await res.json();
       if (res.ok) setUser(data.user);
       else navigate("/login");
@@ -53,7 +53,7 @@ const checkSession = async () => {
 
     const fetchUser = async () => {
       try {
-        const response = await fetch("/api/users", { credentials: "include" });
+        const response = await fetch("https://server-1-gjvd.onrender.com/api/users", { credentials: "include" });
         if (response.ok) {
           const userData = await response.json();
           setUser(userData);
@@ -65,7 +65,7 @@ const checkSession = async () => {
 
     const fetchEvents = async () => {
         try {
-            const response = await fetch("/api/events", {
+            const response = await fetch("https://server-1-gjvd.onrender.com/api/events", {
                 credentials: "include",
             });
             const data = await response.json();
@@ -134,7 +134,7 @@ const checkSession = async () => {
     });
   
     try {
-      const response = await fetch("/api/events", {
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/events", {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -171,7 +171,7 @@ const handleDelete = async (eventId) => {
   }).then(async (result) => {
     if (result.isConfirmed) {
       try {
-        const response = await fetch(`/api/events/${eventId}`, {
+        const response = await fetch(`https://server-1-gjvd.onrender.com/api/events/${eventId}`, {
           method: "DELETE",
           credentials: "include",
         });
@@ -202,7 +202,7 @@ const handleMessageClick = async (event) => {
 
   // Fetch chat history
   try {
-    const res = await fetch(`/api/messages/${currentUser.id}/${userToChat.id}`);
+    const res = await fetch(`https://server-1-gjvd.onrender.com/api/messages/${currentUser.id}/${userToChat.id}`);
     const data = await res.json();
     setMessages(
       data.map((m) => ({
@@ -222,7 +222,7 @@ const handleMessageClick = async (event) => {
  // Unsend message
   const handleUnsendMessage = async (id) => {
   try {
-    const res = await fetch(`/api/messages/${id}`, { method: "DELETE" });
+    const res = await fetch(`https://server-1-gjvd.onrender.com/api/messages/${id}`, { method: "DELETE" });
     if (res.ok) {
       setMessages((prev) => prev.filter((m) => m.id !== id));
       setActiveMsgMenu(null);
@@ -245,7 +245,7 @@ const handleMessageClick = async (event) => {
 
   // Save to database
   try {
-    await fetch("/api/messages", {
+    await fetch("https://server-1-gjvd.onrender.com/api/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

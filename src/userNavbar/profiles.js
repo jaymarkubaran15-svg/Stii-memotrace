@@ -40,7 +40,7 @@ const [profileUser, setProfileUser] = useState(null); // user being viewed
   // ✅ Logged-in user
   const fetchCurrentUser = async () => {
     try {
-      const res = await fetch("/api/session", { credentials: "include" });
+      const res = await fetch("https://server-1-gjvd.onrender.com/api/session", { credentials: "include" });
       if (res.ok) {
         const data = await res.json();
         setUser(data.user); // logged-in user
@@ -53,7 +53,7 @@ const [profileUser, setProfileUser] = useState(null); // user being viewed
   // ✅ The profile being viewed
   const fetchProfileUser = async () => {
     try {
-      const response = await fetch(`/api/users/${id}`, {
+      const response = await fetch(`https://server-1-gjvd.onrender.com/api/users/${id}`, {
         credentials: "include",
       });
       if (!response.ok) throw new Error("Failed to fetch user data");
@@ -67,14 +67,14 @@ const [profileUser, setProfileUser] = useState(null); // user being viewed
   // ✅ Fetch all posts
   const fetchPosts = async () => {
     try {
-      const res = await fetch("/api/posts", { credentials: "include" });
+      const res = await fetch("https://server-1-gjvd.onrender.com/api/posts", { credentials: "include" });
       if (res.ok) {
         const data = await res.json();
         const sortedPosts = data.sort(
           (b, a) => new Date(a.date_posted) - new Date(b.date_posted)
         );
 
-        const userRes = await fetch("/api/users", { credentials: "include" });
+        const userRes = await fetch("https://server-1-gjvd.onrender.com/api/users", { credentials: "include" });
         const allUsers = userRes.ok ? await userRes.json() : [];
 
         const merged = sortedPosts.map((post) => {
@@ -129,7 +129,7 @@ const [profileUser, setProfileUser] = useState(null); // user being viewed
     setSelectedUser(userToChat);
 
     try {
-      const res = await fetch(`/api/messages/${user.id}/${userToChat.id}`);
+      const res = await fetch(`https://server-1-gjvd.onrender.com/api/messages/${user.id}/${userToChat.id}`);
       const data = await res.json();
 
       setMessages(
@@ -149,7 +149,7 @@ const [profileUser, setProfileUser] = useState(null); // user being viewed
   // ✅ Unsend message
   const handleUnsendMessage = async (id) => {
     try {
-      const res = await fetch(`/api/messages/${id}`, { method: "DELETE" });
+      const res = await fetch(`https://server-1-gjvd.onrender.com/api/messages/${id}`, { method: "DELETE" });
       if (res.ok) {
         setMessages((prev) => prev.filter((m) => m.id !== id));
         setActiveMsgMenu(null);
@@ -174,7 +174,7 @@ const [profileUser, setProfileUser] = useState(null); // user being viewed
 
   // Save to database
   try {
-    await fetch("/api/messages", {
+    await fetch("https://server-1-gjvd.onrender.com/api/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

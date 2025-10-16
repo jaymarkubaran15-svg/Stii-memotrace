@@ -58,7 +58,7 @@ const handleMessageClick = async (post) => {
 
   // Fetch chat history
   try {
-    const res = await fetch(`/api/messages/${currentUser.id}/${userToChat.id}`);
+    const res = await fetch(`https://server-1-gjvd.onrender.com/api/messages/${currentUser.id}/${userToChat.id}`);
     const data = await res.json();
     setMessages(
       data.map((m) => ({
@@ -78,7 +78,7 @@ const handleMessageClick = async (post) => {
  // Unsend message
   const handleUnsendMessage = async (id) => {
   try {
-    const res = await fetch(`/api/messages/${id}`, { method: "DELETE" });
+    const res = await fetch(`https://server-1-gjvd.onrender.com/api/messages/${id}`, { method: "DELETE" });
     if (res.ok) {
       setMessages((prev) => prev.filter((m) => m.id !== id));
       setActiveMsgMenu(null);
@@ -101,7 +101,7 @@ const handleMessageClick = async (post) => {
 
   // Save to database
   try {
-    await fetch("/api/messages", {
+    await fetch("https://server-1-gjvd.onrender.com/api/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -124,7 +124,7 @@ const handleMessageClick = async (post) => {
   // 🔹 Fetch user session
   const checkSession = async () => {
     try {
-      const res = await fetch("/api/session", { credentials: "include" });
+      const res = await fetch("https://server-1-gjvd.onrender.com/api/session", { credentials: "include" });
       const data = await res.json();
       if (res.ok) setUser(data.user);
       else navigate("/login");
@@ -136,7 +136,7 @@ const handleMessageClick = async (post) => {
   // 🔹 Fetch posts
   const fetchPosts = async () => {
     try {
-      const res = await fetch("/api/posts", { credentials: "include" });
+      const res = await fetch("https://server-1-gjvd.onrender.com/api/posts", { credentials: "include" });
       if (res.ok) {
         const data = await res.json();
            const sortedPosts = data.sort(
@@ -164,7 +164,7 @@ const handleMessageClick = async (post) => {
     if (!confirmDelete.isConfirmed) return;
 
     try {
-      const res = await fetch(`/api/posts/${postId}`, {
+      const res = await fetch(`https://server-1-gjvd.onrender.com/api/posts/${postId}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -180,7 +180,7 @@ const handleMessageClick = async (post) => {
   // 🔹 Edit post
   const editPost = async (postId) => {
     try {
-      const res = await fetch(`/api/posts/${postId}`, {
+      const res = await fetch(`https://server-1-gjvd.onrender.com/api/posts/${postId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: editedContent }),

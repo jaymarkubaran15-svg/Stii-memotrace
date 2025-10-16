@@ -53,20 +53,20 @@ useEffect(() => {
   const fetchUser = async () => {
   try {
     // ✅ Fetch user profile
-    const response = await fetch("/api/profile", { credentials: "include" });
+    const response = await fetch("https://server-1-gjvd.onrender.com/api/profile", { credentials: "include" });
     if (!response.ok) throw new Error("Failed to fetch user data");
     const userData = await response.json();
     setUser({ ...userData });
 
     // ✅ Fetch latest work experience (no need to include ID, backend uses session)
-    const workRes = await fetch("/api/work/latest", { credentials: "include" });
+    const workRes = await fetch("https://server-1-gjvd.onrender.com/api/work/latest", { credentials: "include" });
     let latestWork = null;
     if (workRes.ok) {
       latestWork = await workRes.json();
     }
 
     // ✅ Fetch latest education
-    const eduRes = await fetch("/api/education/latest", { credentials: "include" });
+    const eduRes = await fetch("https://server-1-gjvd.onrender.com/api/education/latest", { credentials: "include" });
     let latestEducation = null;
     if (eduRes.ok) {
       latestEducation = await eduRes.json();
@@ -103,7 +103,7 @@ useEffect(() => {
 
   const handleLogout = async () => {
     try {
-      await fetch("/api/logout", { method: "POST", credentials: "include" });
+      await fetch("https://server-1-gjvd.onrender.com/api/logout", { method: "POST", credentials: "include" });
       localStorage.removeItem("user");
       navigate("/login");
     } catch (error) {
@@ -121,7 +121,7 @@ useEffect(() => {
        }
      
        try {
-         const response = await fetch(`/api/users/${user.id}/change-userpassword`, {
+         const response = await fetch(`https://server-1-gjvd.onrender.com/api/users/${user.id}/change-userpassword`, {
            method: "PUT",
            headers: { "Content-Type": "application/json" },
            credentials: "include",
@@ -145,7 +145,7 @@ useEffect(() => {
          await Swal.fire({ icon: "success", title: "Success", text: "Password updated successfully! You will be logged out." });
      
          // Call logout API
-         await fetch("/api/logout", {
+         await fetch("https://server-1-gjvd.onrender.com/api/logout", {
            method: "POST",
            credentials: "include",
          });
@@ -173,7 +173,7 @@ useEffect(() => {
       if (!confirmDelete.isConfirmed) return;
     
       try {
-        const response = await fetch(`/api/posts/${postId}`, {
+        const response = await fetch(`https://server-1-gjvd.onrender.com/api/posts/${postId}`, {
           method: "DELETE",
           credentials: "include",
         });
@@ -201,7 +201,7 @@ useEffect(() => {
     
     const editPost = async (postId) => {
       try {
-        const response = await fetch(`/api/posts/${postId}`, {
+        const response = await fetch(`https://server-1-gjvd.onrender.com/api/posts/${postId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ content: editedContent }),
@@ -254,7 +254,7 @@ useEffect(() => {
 
   const fetchPosts = async () => {
     try {
-      const res = await fetch("/api/posts", { credentials: "include" });
+      const res = await fetch("https://server-1-gjvd.onrender.com/api/posts", { credentials: "include" });
       if (res.ok) {
         const data = await res.json();
            const sortedPosts = data.sort(

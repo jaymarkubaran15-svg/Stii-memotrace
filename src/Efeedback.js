@@ -22,7 +22,7 @@ export default function EmployerFeedbackForm() {
       return;
     }
 
-    fetch(`/api/get-alumni-by-token/${tokenFromURL}`)
+    fetch(`https://server-1-gjvd.onrender.com/api/get-alumni-by-token/${tokenFromURL}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -46,7 +46,7 @@ export default function EmployerFeedbackForm() {
 
   // ✅ Load Feedback Form Schema
   useEffect(() => {
-    fetch("/api/feedback-schema")
+    fetch("https://server-1-gjvd.onrender.com/api/feedback-schema")
       .then((res) => res.json())
       .then((result) => {
         if (result.success && result.schema) {
@@ -94,7 +94,7 @@ export default function EmployerFeedbackForm() {
         response: answers,
       };
 
-      const res = await fetch("/api/feedback-response", {
+      const res = await fetch("https://server-1-gjvd.onrender.com/api/feedback-response", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

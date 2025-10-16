@@ -21,7 +21,7 @@ const navigate = useNavigate();
     }
   
     try {
-      const response = await fetch("/api/login", {
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const navigate = useNavigate();
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch("/api/user", {
+        const response = await fetch("https://server-1-gjvd.onrender.com/api/user", {
           method: "GET",
           credentials: "include", // Include cookies
         });

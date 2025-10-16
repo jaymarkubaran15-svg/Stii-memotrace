@@ -23,7 +23,7 @@ export default function EmployerSection({ onClose }) {
   useEffect(() => {
     const fetchInviteCount = async () => {
       try {
-        const res = await fetch("/api/employer-invite-count", {
+        const res = await fetch("https://server-1-gjvd.onrender.com/api/employer-invite-count", {
           credentials: "include",
         });
         const data = await res.json();
@@ -45,7 +45,7 @@ export default function EmployerSection({ onClose }) {
   setEmployerLink(null);
 
   try {
-    const res = await fetch("/api/sendemployerinvite", {
+    const res = await fetch("https://server-1-gjvd.onrender.com/api/sendemployerinvite", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

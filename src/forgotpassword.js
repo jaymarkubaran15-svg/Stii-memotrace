@@ -41,7 +41,7 @@ const MemoryMapSignUp = () => {
 
   const sendCodeToEmail = async (email) => {
     try {
-      const response = await fetch("/api/send-code", {
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/send-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -62,7 +62,7 @@ const MemoryMapSignUp = () => {
     }
 
     try {
-      const response = await fetch("/api/users");
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/users");
       const users = await response.json();
       const matchedUser = users.find(
         (u) => u.email?.toLowerCase() === formData.email.toLowerCase()
@@ -86,7 +86,7 @@ const MemoryMapSignUp = () => {
 
   const handleVerifyClick = async () => {
     try {
-      const response = await fetch("/api/verify-code", {
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/verify-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email, code: userCode }),
@@ -117,7 +117,7 @@ const MemoryMapSignUp = () => {
     }
 
     try {
-      const response = await fetch("/api/reset-password", {
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

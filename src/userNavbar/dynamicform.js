@@ -36,7 +36,7 @@ const prevStep = () => {
 
   // Load schema from DB when page mounts
 useEffect(() => {
-  fetch("/api/schema")
+  fetch("https://server-1-gjvd.onrender.com/api/schema")
     .then(res => res.json())
     .then(result => {
       if (result.success && result.schema) {
@@ -60,7 +60,7 @@ const onSubmit = async (e) => {
   if (!validate()) return;
 
   try {
-    const res = await fetch("/api/submit", {
+    const res = await fetch("https://server-1-gjvd.onrender.com/api/submit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -207,7 +207,7 @@ const addOption = (sIdx, fIdx) => {
 // helper to save schema to DB
 const persistSchema = async (schema) => {
   try {
-    const res = await fetch("/api/schema", {
+    const res = await fetch("https://server-1-gjvd.onrender.com/api/schema", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ schema }), // 🔥 wrap inside {schema}

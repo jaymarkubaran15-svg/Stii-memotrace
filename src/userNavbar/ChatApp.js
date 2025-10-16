@@ -30,7 +30,7 @@ const ChatApp = () => {
 
   // Fetch current user
   useEffect(() => {
-    fetch("/api/session")
+    fetch("https://server-1-gjvd.onrender.com/api/session")
       .then((res) => res.json())
       .then((data) => setUser(data.user))
       .catch(console.error);
@@ -40,7 +40,7 @@ const ChatApp = () => {
   useEffect(() => {
     if (!currentUser?.id) return;
 
-    fetch("/api/users")
+    fetch("https://server-1-gjvd.onrender.com/api/users")
       .then((res) => res.json())
       .then((data) =>
         setAllAlumni(data.filter((a) => a.id !== currentUser.id))
@@ -52,7 +52,7 @@ const ChatApp = () => {
   const loadConversations = () => {
     if (!currentUser?.id) return;
 
-    fetch(`/api/messages/${currentUser.id}/conversations`)
+    fetch(`https://server-1-gjvd.onrender.com/api/messages/${currentUser.id}/conversations`)
       .then((res) => res.json())
       .then((data) => {
         const updated = (Array.isArray(data) ? data : []).map((conv) => ({
@@ -78,7 +78,7 @@ const ChatApp = () => {
   useEffect(() => {
     if (!selectedUser || !currentUser?.id) return;
 
-    fetch(`/api/messages/${currentUser.id}/${selectedUser.partner_id}`)
+    fetch(`https://server-1-gjvd.onrender.com/api/messages/${currentUser.id}/${selectedUser.partner_id}`)
       .then((res) => res.json())
       .then((data) => setMessages(Array.isArray(data) ? data : []))
       .catch(() => setMessages([]));
@@ -100,7 +100,7 @@ const ChatApp = () => {
     };
 
     try {
-      const res = await fetch("/api/messages", {
+      const res = await fetch("https://server-1-gjvd.onrender.com/api/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newMsg),
@@ -127,7 +127,7 @@ const ChatApp = () => {
   // Hide conversation
   const handleHideConversation = async (partnerId) => {
     try {
-      await fetch(`/api/messages/${currentUser.id}/${partnerId}/hide`, {
+      await fetch(`https://server-1-gjvd.onrender.com/api/messages/${currentUser.id}/${partnerId}/hide`, {
         method: "PATCH",
       });
       loadConversations();
@@ -140,7 +140,7 @@ const ChatApp = () => {
   // Delete conversation
   const handleDeleteConversation = async (partnerId) => {
     try {
-      await fetch(`/api/messages/${currentUser.id}/${partnerId}/delete`, {
+      await fetch(`https://server-1-gjvd.onrender.com/api/messages/${currentUser.id}/${partnerId}/delete`, {
         method: "DELETE",
       });
       loadConversations();
@@ -154,7 +154,7 @@ const ChatApp = () => {
   // Unsend message
   const handleUnsendMessage = async (id) => {
     try {
-      await fetch(`/api/messages/${id}`, { method: "DELETE" });
+      await fetch(`https://server-1-gjvd.onrender.com/api/messages/${id}`, { method: "DELETE" });
       setMessages((prev) =>
         (Array.isArray(prev) ? prev : []).filter((m) => m.id !== id)
       );
@@ -177,7 +177,7 @@ const ChatApp = () => {
 
     // Mark all messages from partner as seen
     try {
-      await fetch(`/api/messages/${currentUser.id}/${partnerId}/seen`, {
+      await fetch(`https://server-1-gjvd.onrender.com/api/messages/${currentUser.id}/${partnerId}/seen`, {
         method: "PATCH",
       });
       loadConversations();

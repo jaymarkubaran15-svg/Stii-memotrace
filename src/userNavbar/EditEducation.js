@@ -98,7 +98,7 @@ const handleSave = async () => {
 
   try {
     const isUpdate = Boolean(education.id);
-    const endpoint = isUpdate ? `/api/education/${education.id}` : `/api/education`;
+    const endpoint = isUpdate ? `https://server-1-gjvd.onrender.com/api/education/${education.id}` : `https://server-1-gjvd.onrender.com/api/education`;
     const method = isUpdate ? "PUT" : "POST";
 
     const res = await fetch(endpoint, {

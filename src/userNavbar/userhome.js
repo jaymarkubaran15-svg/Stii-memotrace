@@ -198,7 +198,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("/api/user", {
+        const res = await fetch("https://server-1-gjvd.onrender.com/api/user", {
           method: "GET",
           credentials: "include",
         });

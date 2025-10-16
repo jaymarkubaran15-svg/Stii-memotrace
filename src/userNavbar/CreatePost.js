@@ -31,7 +31,7 @@ export default function CreatePost() {
   
     const fetchUser = async () => {
       try {
-        const response = await fetch("/api/profile", { credentials: "include" });
+        const response = await fetch("https://server-1-gjvd.onrender.com/api/profile", { credentials: "include" });
         if (!response.ok) throw new Error("Failed to fetch user data");
         const userData = await response.json();
         setUser({ ...userData });
@@ -124,7 +124,7 @@ export default function CreatePost() {
     try {
         setLoading(true);
 
-        const res = await fetch("/api/posts", {
+        const res = await fetch("https://server-1-gjvd.onrender.com/api/posts", {
           method: "POST",
           body: formData,
           credentials: "include",

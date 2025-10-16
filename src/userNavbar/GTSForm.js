@@ -15,7 +15,7 @@ export default function GTSForm() {
 
   // 🔹 Load schema from backend safely
 useEffect(() => {
-  fetch("/api/schema")
+  fetch("https://server-1-gjvd.onrender.com/api/schema")
     .then(res => res.json())
     .then(result => {
       if (result?.success && Array.isArray(result?.schema?.sections)) {
@@ -33,7 +33,7 @@ useEffect(() => {
     useEffect(() => {
       const checkSession = async () => {
         try {
-          const response = await fetch("/api/session", {
+          const response = await fetch("https://server-1-gjvd.onrender.com/api/session", {
             method: "GET",
             credentials: "include", // Include cookies
           });
@@ -211,7 +211,7 @@ const validateAll = () => {
   
         console.log("User Session:", user);
   
-        const response =  await fetch("/api/submit",{
+        const response =  await fetch("https://server-1-gjvd.onrender.com/api/submit",{
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -250,7 +250,7 @@ const validateAll = () => {
   
      const fetchUser = async () => {
     try {
-      const response = await fetch("/api/user", { credentials: "include" });
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/user", { credentials: "include" });
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);

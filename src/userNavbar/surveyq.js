@@ -24,7 +24,7 @@ export default function GTSPage({ onSurveySubmit }) {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch("/api/session", {
+        const response = await fetch("https://server-1-gjvd.onrender.com/api/session", {
           method: "GET",
           credentials: "include",
         });
@@ -48,7 +48,7 @@ export default function GTSPage({ onSurveySubmit }) {
   }, [data]);
 
   useEffect(() => {
-    fetch("/api/survyschema")
+    fetch("https://server-1-gjvd.onrender.com/api/survyschema")
       .then((res) => res.json())
       .then((result) => {
         if (result.success && result.schema) {
@@ -121,7 +121,7 @@ const onSubmit = async (e) => {
   setSubmitted(true);
 
   try {
-    const res = await fetch("/api/submitsurvey", {
+    const res = await fetch("https://server-1-gjvd.onrender.com/api/submitsurvey", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -151,7 +151,7 @@ const onSubmit = async (e) => {
 useEffect(() => {
   const fetchLaterCount = async () => {
     try {
-      const res = await fetch("/api/getlatercount", { credentials: "include" });
+      const res = await fetch("https://server-1-gjvd.onrender.com/api/getlatercount", { credentials: "include" });
       const data = await res.json();
       if (data.success) setLaterCount(data.count || 0);
     } catch (err) {
@@ -175,7 +175,7 @@ const handleFillOutLater = async () => {
     }
 
     // Increment the "fill out later" count in your backend
-    const res = await fetch("/api/incrementlater", {
+    const res = await fetch("https://server-1-gjvd.onrender.com/api/incrementlater", {
       method: "POST",
       credentials: "include",
     });

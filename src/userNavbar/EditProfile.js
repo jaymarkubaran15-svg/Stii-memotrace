@@ -44,7 +44,7 @@ export default function EditProfilePage({ onClose }) {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch("/api/profile", { credentials: "include" });
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/profile", { credentials: "include" });
       if (!response.ok) throw new Error("Failed to fetch user data");
       const userData = await response.json();
 
@@ -62,7 +62,7 @@ export default function EditProfilePage({ onClose }) {
       });
 
       // ✅ Fetch user's work
-      const workRes = await fetch("/api/work", { credentials: "include" });
+      const workRes = await fetch("https://server-1-gjvd.onrender.com/api/work", { credentials: "include" });
       if (workRes.ok) {
         const workData = await workRes.json();
         setUpdatedUser((prev) => ({
@@ -72,7 +72,7 @@ export default function EditProfilePage({ onClose }) {
       }
 
      // ✅ Fetch user's education
-      const eduRes = await fetch("/api/education", { credentials: "include" });
+      const eduRes = await fetch("https://server-1-gjvd.onrender.com/api/education", { credentials: "include" });
       if (eduRes.ok) {
         const eduData = await eduRes.json();
         setUpdatedUser((prev) => ({
@@ -197,7 +197,7 @@ export default function EditProfilePage({ onClose }) {
       formData.append("profile", file);
     }
 
-    const res = await fetch(`/api/users/${user.id}`, {
+    const res = await fetch(`https://server-1-gjvd.onrender.com/api/users/${user.id}`, {
       method: "PUT",
       body: formData,
       credentials: "include",
@@ -216,7 +216,7 @@ export default function EditProfilePage({ onClose }) {
     // ✅ Save work if present (only on Save Changes)
     if (updatedUser.work && updatedUser.work.position && updatedUser.work.company) {
       try {
-        const workRes = await fetch("/api/work", {
+        const workRes = await fetch("https://server-1-gjvd.onrender.com/api/work", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

@@ -42,7 +42,7 @@ export default function Post({ onSearch }) {
   
   const fetchUser = async () => {
     try {
-      const response = await fetch("/api/user", { credentials: "include" });
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/user", { credentials: "include" });
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
@@ -54,7 +54,7 @@ export default function Post({ onSearch }) {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch("/api/posts", { credentials: "include" });
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/posts", { credentials: "include" });
       if (response.ok) {
         const postData = await response.json();
         console.log("Posts:", postData);
@@ -69,7 +69,7 @@ export default function Post({ onSearch }) {
     if (!newPost.trim() || !user) return;
   
     try {
-      const response = await fetch("/api/posts", {
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: newPost }),
@@ -118,7 +118,7 @@ export default function Post({ onSearch }) {
     if (!confirmDelete.isConfirmed) return;
   
     try {
-      const response = await fetch(`/api/posts/${postId}`, {
+      const response = await fetch(`https://server-1-gjvd.onrender.com/api/posts/${postId}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -147,7 +147,7 @@ export default function Post({ onSearch }) {
 
   const editPost = async (postId) => {
     try {
-      const response = await fetch(`/api/posts/${postId}`, {
+      const response = await fetch(`https://server-1-gjvd.onrender.com/api/posts/${postId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: editedContent }),
