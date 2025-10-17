@@ -8,6 +8,7 @@ const MemoryMapLanding = () => {
 const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -19,7 +20,7 @@ const navigate = useNavigate();
       });
       return;
     }
-  
+  setLoading(true); 
     try {
       const response = await fetch("https://server-1-gjvd.onrender.com/api/login", {
         method: "POST",
@@ -69,7 +70,9 @@ const navigate = useNavigate();
         icon: "error",
         confirmButtonText: "OK",
       });
-    }
+    } finally {
+    setLoading(false); // stop loading in all cases
+  }
   };
   
   useEffect(() => {
@@ -155,13 +158,19 @@ const navigate = useNavigate();
             Forgot password?
           </p>
           <motion.button 
-            whileHover={{ scale: 1.05 }} 
-            whileTap={{ scale: 0.95 }} 
-            className="bg-blue-600 hover:bg-blue-700 px-4 py-3 rounded-lg text-white text-lg w-full shadow-lg transition transform hover:scale-105 hover:shadow-blue-400/50"
+            whileHover={!loading ? { scale: 1.05 } : {}} 
+            whileTap={!loading ? { scale: 0.95 } : {}} 
+            disabled={loading}
+            className={`px-4 py-3 rounded-lg text-white text-lg w-full shadow-lg transition transform ${
+              loading
+                ? "bg-blue-300 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700 hover:scale-105 hover:shadow-blue-400/50"
+            }`}
             onClick={handleLogin}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </motion.button>
+
         </div>
       </motion.div>
 
