@@ -14,7 +14,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('/yearbooks/count')
+    fetch('https://server-1-gjvd.onrender.com/yearbooks/count')
       .then(response => response.json())
       .then(data => setYearbookCount(data.count))
       .catch(error => console.error('Error fetching yearbook count:', error));
@@ -23,13 +23,13 @@ const Dashboard = () => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch("/api/session", {
+        const response = await fetch("https://server-1-gjvd.onrender.com/api/session", {
           method: "GET",
           credentials: "include",
         });
         const data = await response.json();
         if (response.ok) {
-          navigate(data.user.role === "admin" ? "/dashboard" : "/userhome");
+          navigate(data.user.role === "admin" ? "https://server-1-gjvd.onrender.com/dashboard" : "https://server-1-gjvd.onrender.com/userhome");
         }
       } catch (error) {
         console.error("Session check failed:", error);
@@ -39,7 +39,7 @@ const Dashboard = () => {
   }, [navigate]);
 
   useEffect(() => {
-    fetch('/api/users')
+    fetch('https://server-1-gjvd.onrender.com/api/users')
       .then(response => response.json())
       .then(data => {
         const monthlyData = Array(12).fill(0);
@@ -60,7 +60,7 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    fetch('/api/posts')
+    fetch('https://server-1-gjvd.onrender.com/api/posts')
       .then(response => response.json())
       .then(posts => {
         setPrevPostCount(postCount);

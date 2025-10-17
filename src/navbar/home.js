@@ -38,7 +38,7 @@ const UploadYearbook = ({ setYearbooks }) => {
   }
 
   try {
-    const response = await fetch("/upload-yearbook", {
+    const response = await fetch("https://server-1-gjvd.onrender.com/upload-yearbook", {
       method: "POST",
       body: formData,
     });
@@ -143,11 +143,11 @@ const YearbookCard = ({ yearbook, setYearbooks }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    fetch(`/yearbook/${id}/images`)
+    fetch(`https://server-1-gjvd.onrender.com/yearbook/${id}/images`)
       .then((res) => res.json())
       .then((images) => {
         if (images.length > 0) {
-          setImageSrc(`/${images[0].file_path}`);
+          setImageSrc(`https://server-1-gjvd.onrender.com/${images[0].file_path}`);
         }
       })
       .catch((err) => console.error("Error fetching images:", err));
@@ -168,7 +168,7 @@ const YearbookCard = ({ yearbook, setYearbooks }) => {
    if (!result.isConfirmed) return;
 
   try {
-    const res = await fetch(`/yearbook/${id}`, {
+    const res = await fetch(`https://server-1-gjvd.onrender.com/yearbook/${id}`, {
       method: "DELETE",
     });
 
@@ -232,7 +232,7 @@ const YearbookViewer = ({ yearbook, onClose }) => {
   const [singlePage, setSinglePage] = useState(false);
 
   useEffect(() => {
-    fetch(`/yearbook/${yearbook.id}/images`)
+    fetch(`https://server-1-gjvd.onrender.com/${yearbook.id}/images`)
       .then((res) => res.json())
       .then((data) => setImages(data))
       .catch((err) => console.error("Error fetching images:", err));
@@ -321,7 +321,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("/yearbooks")
+    fetch("https://server-1-gjvd.onrender.com/yearbooks")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -340,7 +340,7 @@ export default function Dashboard() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch("/api/session", {
+        const response = await fetch("https://server-1-gjvd.onrender.com/api/session", {
           method: "GET",
           credentials: "include",
         });
