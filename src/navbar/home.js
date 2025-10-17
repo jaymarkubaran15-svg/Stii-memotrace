@@ -17,14 +17,15 @@ const UploadYearbook = ({ setYearbooks }) => {
 
 
   const handleFileSelect = (event) => {
-    const files = Array.from(event.target.files);
-    if (files.length > 0) {
-      const fullPath = files[0].webkitRelativePath || files[0].name;
-      const folder = fullPath.split("/")[0];
-      setFolderName(folder);
-    }
-    setSelectedFiles(files);
-  };
+  const files = Array.from(event.target.files);
+  if (files.length > 0) {
+    const firstPath = files[0].webkitRelativePath || files[0].name;
+    const folder = firstPath.includes("/") ? firstPath.split("/")[0] : "UnnamedFolder";
+    setFolderName(folder);
+  }
+  setSelectedFiles(files);
+};
+
 
 const handleUpload = async () => {
   if (!folderName || selectedFiles.length === 0 || !studentName) {
@@ -76,9 +77,16 @@ const handleUpload = async () => {
 
     const result = await response.json();
     Swal.fire("Success", result.message, "success");
+
+    // Refresh yearbooks list
+    const res = await fetch("https://server-1-gjvd.onrender.com/yearbooks");
+    const data = await res.json();
+    setYearbooks(data);
+
     setSelectedFiles([]);
     setFolderName("");
     setstudentName(null);
+
   } catch (err) {
     console.error("Upload failed:", err);
     Swal.fire("Error", "Upload failed. Please try again.", "error");
@@ -327,7 +335,7 @@ const YearbookViewer = ({ yearbook, onClose }) => {
             {images.map((img, index) => (
               <div key={index} className="flex justify-center items-center">
                 <img
-                  src={`https://server-1-gjvd.onrender.com/${img.file_path}`}
+                  src={img.file_path.startsWith("http") ? img.file_path : `https://server-1-gjvd.onrender.com/${img.file_path}`}
                   alt={`Page ${index + 1}`}
                   className="max-w-full max-h-full object-contain rounded-lg"
                 />
