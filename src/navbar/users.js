@@ -16,7 +16,7 @@ export default function Users() {
 
 
    useEffect(() => {
-  fetch("/api/users")
+  fetch("https://server-1-gjvd.onrender.com/api/users")
     .then((res) => res.json())
     .then((data) => {
       const alumniUsers = data.filter(user => user.role === "alumni");
@@ -78,7 +78,7 @@ const filteredList = users.filter((user) => {
 // ===== Fetch GTS submissions =====
 let submissions = [];
 try {
-  const res = await fetch("/api/allsubmissions");
+  const res = await fetch("https://server-1-gjvd.onrender.com/api/allsubmissions");
   const data = await res.json();
   submissions = Array.isArray(data) ? data : data.submissions || data.data || [];
 
@@ -244,7 +244,7 @@ doc.save(`Alumni_GTS_Report_${new Date().toISOString().split("T")[0]}.pdf`);
   
 const downloadUserPDF = async (user) => {
   try {
-    const res = await fetch(`/api/submission/${user.id}`);
+    const res = await fetch(`https://server-1-gjvd.onrender.com/api/submission/${user.id}`);
     const data = await res.json();
     const answers = data.answers || {};
 

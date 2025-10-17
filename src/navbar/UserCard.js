@@ -9,7 +9,7 @@ export default function AlumniProfiles() {
   const [alumni, setAlumni] = useState([]);
 
   useEffect(() => {
-    fetch("/api/alumni_profiles")
+    fetch("https://server-1-gjvd.onrender.com/api/alumni_profiles")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) setAlumni(data);
