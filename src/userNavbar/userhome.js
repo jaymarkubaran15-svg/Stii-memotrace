@@ -10,16 +10,19 @@ const YearbookCard = ({ yearbook }) => {
   const [imageSrc, setImageSrc] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    fetch(`https://server-1-gjvd.onrender.com/yearbook/${id}/images`)
-      .then((res) => res.json())
-      .then((images) => {
-        if (images.length > 0) {
-          setImageSrc(`https://server-1-gjvd.onrender.com/${images[0].file_path}`);
-        }
-      })
-      .catch((err) => console.error("Error fetching images:", err));
-  }, [id]);
+useEffect(() => {
+  fetch(`https://server-1-gjvd.onrender.com/yearbook/${id}/images`)
+    .then((res) => res.json())
+    .then((images) => {
+      if (images.length > 0) {
+        // Normalize slashes and avoid double domain
+        const cleanPath = images[0].file_path.replace(/\\/g, "/");
+        setImageSrc(cleanPath);
+      }
+    })
+    .catch((err) => console.error("Error fetching images:", err));
+}, [id]);
+
 
   return (
     <>
