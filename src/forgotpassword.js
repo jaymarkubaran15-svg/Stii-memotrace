@@ -16,6 +16,7 @@ const MemoryMapSignUp = () => {
   const [cooldown, setCooldown] = useState(0);
   const [isCooldownActive, setIsCooldownActive] = useState(false);
   const navigate = useNavigate();
+const [loading, setLoading] = useState(false);
 
   const startCooldown = () => {
     setCooldown(60);
@@ -60,7 +61,7 @@ const MemoryMapSignUp = () => {
       setError("Please enter your email.");
       return;
     }
-
+    setLoading(true);
     try {
       const response = await fetch("https://server-1-gjvd.onrender.com/api/users");
       const users = await response.json();
@@ -70,6 +71,7 @@ const MemoryMapSignUp = () => {
 
       if (!matchedUser) {
         setError("No account found with that email.");
+        setLoading(false);
         return;
       }
 
@@ -81,10 +83,13 @@ const MemoryMapSignUp = () => {
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Try again later.");
-    }
+    }finally {
+    setLoading(false);
+  }
   };
 
   const handleVerifyClick = async () => {
+      setLoading(true);
     try {
       const response = await fetch("https://server-1-gjvd.onrender.com/api/verify-code", {
         method: "POST",
@@ -103,7 +108,9 @@ const MemoryMapSignUp = () => {
     } catch (err) {
       console.error("Verification error:", err);
       setError("Something went wrong. Please try again.");
-    }
+    }finally {
+    setLoading(false);
+  }
   };
 
   const handlePasswordReset = async () => {
@@ -115,7 +122,7 @@ const MemoryMapSignUp = () => {
       });
       return;
     }
-
+  setLoading(true);
     try {
       const response = await fetch("https://server-1-gjvd.onrender.com/api/reset-password", {
         method: "POST",
@@ -149,7 +156,9 @@ const MemoryMapSignUp = () => {
         title: "Error",
         text: "Something went wrong. Please try again later.",
       });
-    }
+    }finally {
+    setLoading(false);
+  }
   };
 
   return (
@@ -194,12 +203,16 @@ const MemoryMapSignUp = () => {
                 placeholder="Enter your email"
               />
             </div>
-            <button
-              className="w-full mt-6 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white shadow-md"
+           <button
+              disabled={loading}
+              className={`w-full mt-6 px-4 py-2 rounded-lg text-white shadow-md ${
+                loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+              }`}
               onClick={handleSearchEmail}
             >
-              Send Verification Code
+              {loading ? "Sending..." : "Send Verification Code"}
             </button>
+
             <button
               className="w-full mt-3 bg-gray-400 hover:bg-gray-500 px-4 py-2 rounded-lg text-white"
               onClick={() => navigate("/login")}
@@ -225,12 +238,15 @@ const MemoryMapSignUp = () => {
               />
             </div>
 
-            <button
-              className="w-full mt-3 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white"
-              onClick={handleVerifyClick}
-            >
-              Verify Code
-            </button>
+             <button
+                disabled={loading}
+                className={`w-full mt-3 px-4 py-2 rounded-lg text-white ${
+                  loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                }`}
+                onClick={handleVerifyClick}
+              >
+                {loading ? "Verifying..." : "Verify Code"}
+              </button>
 
             <button
               disabled={isCooldownActive}
