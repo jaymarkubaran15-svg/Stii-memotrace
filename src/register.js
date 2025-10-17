@@ -61,8 +61,6 @@ const MemoryMapSignUp = () => {
   
     checkSession();
   }, [navigate]); 
-
-  
   
     const handleInputChange = async (e) => {
       const { name, value,  type, checked } = e.target;
@@ -163,8 +161,6 @@ const MemoryMapSignUp = () => {
     });
   }
 };
-
-
 
     const courses = [
   // 🧑‍💻 Information Technology & Computer Studies
@@ -388,14 +384,9 @@ const MemoryMapSignUp = () => {
         />
       </div>
 
-
-
-
-            <input type="password" name="password" placeholder="Enter Password" value={formData.password} onChange={handleInputChange} className="w-full px-4 py-2 mt-1 rounded-md bg-black bg-opacity-30 text-black border border-white border-opacity-50 focus:ring focus:ring-blue-400 backdrop-blur-lg placeholder-black" />
-            <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleInputChange} className="w-full px-4 py-2 mt-1 rounded-md bg-black bg-opacity-30 text-black border border-white border-opacity-50 focus:ring focus:ring-blue-400 backdrop-blur-lg placeholder-black" />
-            
+      <input type="password" name="password" placeholder="Enter Password" value={formData.password} onChange={handleInputChange} className="w-full px-4 py-2 mt-1 rounded-md bg-black bg-opacity-30 text-black border border-white border-opacity-50 focus:ring focus:ring-blue-400 backdrop-blur-lg placeholder-black" />
+      <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleInputChange} className="w-full px-4 py-2 mt-1 rounded-md bg-black bg-opacity-30 text-black border border-white border-opacity-50 focus:ring focus:ring-blue-400 backdrop-blur-lg placeholder-black" /> 
       </div>
-
 
         {/* Privacy Checkbox */}
  <div className="flex flex-col mt-4">
@@ -485,55 +476,6 @@ const MemoryMapSignUp = () => {
       >
         <img src={SignUpImage} alt="Illustration" className="w-full h-auto object-contain" />
       </motion.div>
-
-      {/* Tailwind CSS Keyframe Animations */}
-      {/* <style>
-        {`
-          @keyframes animatedBackground {
-            0% { background: linear-gradient(45deg, #1e3a8a, #2563eb, #1e40af); }
-            50% { background: linear-gradient(45deg, #2563eb, #1e40af, #1e3a8a); }
-            100% { background: linear-gradient(45deg, #1e3a8a, #2563eb, #1e40af); }
-          }
-          .bg-dark-gradient {
-            animation: animatedBackground 8s infinite alternate;
-          }
-
-          @keyframes glow {
-            0% { text-shadow: 0 0 10px #3b82f6; }
-            50% { text-shadow: 0 0 20px #1e3a8a; }
-            100% { text-shadow: 0 0 10px #3b82f6; }
-          }
-          .animate-glow {
-            animation: glow 2s infinite alternate;
-          }
-
-          @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-          }
-          .animate-fade-in {
-            animation: fadeIn 1.5s ease-in-out;
-          }
-
-          @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
-          }
-          .animate-float {
-            animation: float 4s infinite ease-in-out;
-          }
-            @keyframes animatedBackground {
-           0% { background: linear-gradient(45deg, #0a1f44, #102a67, #0c2b55); }
-           50% { background: linear-gradient(45deg, #102a67, #0c2b55, #0a1f44); }
-           100% { background: linear-gradient(45deg, #0a1f44, #102a67, #0c2b55); }
-          }
-          .bg-dark-gradient {
-          animation: animatedBackground 8s infinite alternate;
-          }
-
-        `}
-      </style> */}
     </div>
   );
 };  
