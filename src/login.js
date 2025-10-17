@@ -24,10 +24,11 @@ const [loading, setLoading] = useState(false);
     try {
       const response = await fetch("https://server-1-gjvd.onrender.com/api/login", {
         method: "POST",
+        
+        credentials: "include", // This is important for handling sessions
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include", // This is important for handling sessions
         body: JSON.stringify({ email, password }),
       });
   
