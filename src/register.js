@@ -10,6 +10,7 @@ const MemoryMapSignUp = () => {
    const navigate = useNavigate();
     const [suggestions, setSuggestions] = useState([]);
     const [workTitles, setWorkTitles] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
       firstName: "",
       middleName: "",
@@ -85,7 +86,7 @@ const MemoryMapSignUp = () => {
   
     const handleSubmit = async (e) => {
   e.preventDefault();
-
+ if (loading) return; 
   // 🛑 Validate password match
   if (formData.password !== formData.confirmPassword) {
     Swal.fire({
@@ -109,6 +110,7 @@ const MemoryMapSignUp = () => {
   }
 
   try {
+        setLoading(true); 
     const response = await fetch("https://server-1-gjvd.onrender.com/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -159,6 +161,8 @@ const MemoryMapSignUp = () => {
       icon: "error",
       confirmButtonText: "OK",
     });
+  } finally {
+    setLoading(false); 
   }
 };
 
@@ -282,6 +286,7 @@ const MemoryMapSignUp = () => {
           </span>
         </p>
         <form onSubmit={handleSubmit}>
+           <fieldset disabled={loading}>
      <div className="grid grid-cols-2 gap-4 mt-6 mb-4 animate-fade-in">
      <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleInputChange} className="w-full px-4 py-2 mt-1 rounded-md bg-black bg-opacity-30 text-black border border-white border-opacity-50 focus:ring focus:ring-blue-400 backdrop-blur-lg placeholder-black" />
             <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleInputChange} className="w-full px-4 py-2 mt-1 rounded-md bg-black bg-opacity-30 text-black border border-white border-opacity-50 focus:ring focus:ring-blue-400 backdrop-blur-lg placeholder-black" />
@@ -451,12 +456,16 @@ const MemoryMapSignUp = () => {
     </div>
 
         {/* Buttons */}
-        <button 
-          className="w-full mt-6 bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-white shadow-lg transition transform hover:scale-105 animate-glow"
-         type="submit"
+        <button
+          className={`w-full mt-6 px-4 py-2 rounded-lg text-white shadow-lg transition transform hover:scale-105 animate-glow ${
+            loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+          }`}
+          type="submit"
+          disabled={loading}
         >
-          Sign up
+          {loading ? "Signing up..." : "Sign up"}
         </button>
+        </fieldset>
         </form>
         
         <button 
