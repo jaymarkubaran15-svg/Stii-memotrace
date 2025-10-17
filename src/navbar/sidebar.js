@@ -32,7 +32,7 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch("/api/logout", {
+      await fetch("https://server-1-gjvd.onrender.com/api/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -45,7 +45,7 @@ const Sidebar = () => {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch("/api/user", {
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/user", {
         credentials: "include",
       });
       if (!response.ok) throw new Error("Failed to fetch user data");

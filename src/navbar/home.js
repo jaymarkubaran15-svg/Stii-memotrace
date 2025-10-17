@@ -332,24 +332,16 @@ const YearbookViewer = ({ yearbook, onClose }) => {
             className="shadow-lg rounded-lg"
             singlePage={singlePage}
           >
-            {images.map((img, index) => {
-                const imageUrl =
-                  img.file_path && img.file_path.startsWith("http")
-                    ? img.file_path
-                    : `https://server-1-gjvd.onrender.com/${img.file_path}`;
-
-                return (
-                  <div key={index} className="flex justify-center items-center">
-                    <img
-                      src={imageUrl}
-                      alt={`Page ${index + 1}`}
-                      className="max-w-full max-h-full object-contain rounded-lg"
-                      onError={(e) => (e.target.src = "/fallback-image.png")} // 👈 optional fallback
-                    />
-                  </div>
-                );
-              })}
-
+           {images.map((img, i) => (
+            <div key={index} className="w-auto h-auto flex justify-center items-center">
+              <img
+                key={i}
+                src={img.file_path} // Cloudinary URL
+                alt="Yearbook page"
+                className="max-w-full max-h-full object-contain rounded-lg"
+              />
+             </div>
+            ))}
           </HTMLFlipBook>
         ) : (
           <p className="text-center text-gray-300">No images found.</p>
