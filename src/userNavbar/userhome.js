@@ -15,9 +15,12 @@ useEffect(() => {
     .then((res) => res.json())
     .then((images) => {
       if (images.length > 0) {
-        // Normalize slashes and avoid double domain
-        const cleanPath = images[0].file_path.replace(/\\/g, "/");
-        setImageSrc(cleanPath);
+        let imageUrl = images[0].file_path;
+        if (!imageUrl.startsWith("http")) {
+          imageUrl = `https://server-1-gjvd.onrender.com/${imageUrl}`;
+        }
+        setImageSrc(imageUrl);
+
       }
     })
     .catch((err) => console.error("Error fetching images:", err));
@@ -171,11 +174,12 @@ const YearbookViewer = ({ yearbook, onClose }) => {
                   className="flex justify-center items-center bg-white"
                 >
                   <img
-                    src={`https://server-1-gjvd.onrender.com/${img.file_path}`}
+                    src={img.file_path.startsWith("http") ? img.file_path : `https://server-1-gjvd.onrender.com/${img.file_path}`}
                     alt={`Page ${index + 1}`}
                     className="w-full h-full object-contain sm:object-cover rounded"
                     draggable={false}
                   />
+
 
                 </div>
               ))}
