@@ -13,6 +13,9 @@ const UploadYearbook = ({ setYearbooks }) => {
   const [studentName, setstudentName] = useState(null);
   const [loading, setLoading] = useState(false); // ✅ loading state
 
+  const [progress, setProgress] = useState(0);
+
+
   const handleFileSelect = (event) => {
     const files = Array.from(event.target.files);
     if (files.length > 0) {
@@ -23,49 +26,67 @@ const UploadYearbook = ({ setYearbooks }) => {
     setSelectedFiles(files);
   };
 
-  const handleUpload = async () => {
-    if (!folderName || selectedFiles.length === 0 || !studentName) {
-      Swal.fire("Missing Information", "Please select a folder and a student name file.", "warning");
-      return;
-    }
+const handleUpload = async () => {
+  if (!folderName || selectedFiles.length === 0 || !studentName) {
+    Swal.fire("Missing Information", "Please select a folder and a student name file.", "warning");
+    return;
+  }
 
-    setLoading(true); // ✅ start loading
+  setLoading(true);
+  setProgress(0);
 
-    const formData = new FormData();
-    formData.append("folderName", folderName);
-    formData.append("yearbookName", "Yearbook 2025");
-    formData.append("studentNames", studentName);
+  try {
+    // 1️⃣  Get Cloudinary signature
+    const sigRes = await fetch(`https://server-1-gjvd.onrender.com/cloudinary-signature?folder=${folderName}`);
+    const { timestamp, signature, apiKey, cloudName } = await sigRes.json();
 
-    for (let file of selectedFiles) {
-      formData.append("images", file);
-    }
+    // 2️⃣  Upload all images directly to Cloudinary
+    const uploadedUrls = [];
 
-    try {
-      const response = await fetch("https://server-1-gjvd.onrender.com/upload-yearbook", {
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const file = selectedFiles[i];
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("api_key", apiKey);
+      formData.append("timestamp", timestamp);
+      formData.append("signature", signature);
+      formData.append("folder", `yearbooks/${folderName}`);
+
+      const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
         method: "POST",
         body: formData,
       });
 
-      const data = await response.json();
-
-      Swal.fire("Success", data.message, "success").then(() => {
-        window.location.reload();
-      });
-
-      setYearbooks((prev) => [
-        ...prev,
-        { folder_name: folderName, preview_image: "", date_uploaded: new Date() },
-      ]);
-
-      setSelectedFiles([]);
-      setFolderName("");
-      setstudentName("");
-    } catch (error) {
-      Swal.fire("Error", "Failed to upload yearbook.", "error");
-    } finally {
-      setLoading(false); // ✅ stop loading
+      const data = await uploadRes.json();
+      uploadedUrls.push(data.secure_url);
+      setProgress(Math.round(((i + 1) / selectedFiles.length) * 100));
     }
-  };
+
+    // 3️⃣  Send metadata + student file + URLs to backend
+    const backendForm = new FormData();
+    backendForm.append("folderName", folderName);
+    backendForm.append("yearbookName", "Yearbook 2025");
+    backendForm.append("studentNames", studentName);
+    uploadedUrls.forEach((url) => backendForm.append("imageUrls[]", url));
+
+    const response = await fetch("https://server-1-gjvd.onrender.com/upload-yearbook", {
+      method: "POST",
+      body: backendForm,
+    });
+
+    const result = await response.json();
+    Swal.fire("Success", result.message, "success");
+    setSelectedFiles([]);
+    setFolderName("");
+    setstudentName(null);
+  } catch (err) {
+    console.error("Upload failed:", err);
+    Swal.fire("Error", "Upload failed. Please try again.", "error");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleCancel = () => {
     setSelectedFiles([]);
@@ -102,7 +123,7 @@ const UploadYearbook = ({ setYearbooks }) => {
           {loading ? (
             <>
               <Loader2 size={18} className="mr-2 animate-spin" />
-              Uploading...
+              Uploading...{progress}%
             </>
           ) : (
             <>
