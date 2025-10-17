@@ -332,16 +332,17 @@ const YearbookViewer = ({ yearbook, onClose }) => {
             className="shadow-lg rounded-lg"
             singlePage={singlePage}
           >
-           {images.map((img, i) => (
-            <div key={index} className="w-auto h-auto flex justify-center items-center">
-              <img
-                key={i}
-                src={img.file_path} // Cloudinary URL
-                alt="Yearbook page"
-                className="max-w-full max-h-full object-contain rounded-lg"
-              />
-             </div>
-            ))}
+      {images.map((img, i) => (
+      <div key={i} className="w-auto h-auto flex justify-center items-center">
+        <img
+          src={img.file_path} // Cloudinary URL from database
+          alt={`Yearbook page ${i + 1}`}
+          className="max-w-full max-h-full object-contain rounded-lg"
+          onError={(e) => (e.target.style.display = "none")} // hides broken images
+        />
+      </div>
+    ))}
+
           </HTMLFlipBook>
         ) : (
           <p className="text-center text-gray-300">No images found.</p>
