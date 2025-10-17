@@ -168,11 +168,12 @@ const YearbookViewer = ({ yearbook, onClose }) => {
                   className="flex justify-center items-center bg-white"
                 >
                   <img
-                    src={`/${img.file_path}`}
+                    src={`https://server-1-gjvd.onrender.com/${img.file_path}`}
                     alt={`Page ${index + 1}`}
                     className="w-full h-full object-contain sm:object-cover rounded"
                     draggable={false}
                   />
+
                 </div>
               ))}
             </HTMLFlipBook>
