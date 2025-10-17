@@ -79,7 +79,7 @@ const [loading, setLoading] = useState(false);
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch("https://server-1-gjvd.onrender.com/api/user", {
+        const response = await fetch("https://server-1-gjvd.onrender.com/api/session", {
           method: "GET",
           credentials: "include", // Include cookies
         });
