@@ -10,7 +10,7 @@ export default function Users() {
   const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
-    fetch("/api/users")
+    fetch("https://server-1-gjvd.onrender.com/api/users")
       .then((res) => res.json())
       .then((data) => {
         const alumniUsers = data.filter((user) => user.role === "alumni");
@@ -36,7 +36,7 @@ export default function Users() {
 
     try {
       const xhr = new XMLHttpRequest();
-      xhr.open("POST", "http://localhost:5000/upload-alumni-ids", true);
+      xhr.open("POST", "https://server-1-gjvd.onrender.com/upload-alumni-ids", true);
 
       xhr.upload.onprogress = (event) => {
         if (event.lengthComputable) {
