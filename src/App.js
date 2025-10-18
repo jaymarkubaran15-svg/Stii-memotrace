@@ -19,6 +19,7 @@ import CreateAdminPost from './navbar/CreateAdminPost';
 import AdminPost from './navbar/AdminPost';
 import CareerPath from './navbar/CareerPath';
 import UserCard from './navbar/UserCard';
+import UsersList from './navbar/UsersList'
 // import CourseAlignment from './navbar/courseAlignment';
 
 
@@ -78,6 +79,7 @@ export default function App() {
         <Route path="/alumnilist" element={<AlumniList />} />
         <Route path="/CareerPath" element={<CareerPath />} />
         <Route path="/UserCard" element={<UserCard />} />
+         <Route path="/UsersList" element={<UsersList />} />
 
 
         <Route path="/searchresult" element={<AdminSearch />} />
