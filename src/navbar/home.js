@@ -68,7 +68,7 @@ const handleUpload = async () => {
     backendForm.append("folderName", folderName);
     backendForm.append("yearbookName", "Yearbook 2025");
     backendForm.append("studentNames", studentName);
-    uploadedUrls.forEach((url) => backendForm.append("imageUrls[]", url));
+    uploadedUrls.forEach((url) => backendForm.append("imageUrls", url));
 
     const response = await fetch("https://server-1-gjvd.onrender.com/upload-yearbook", {
       method: "POST",
@@ -94,7 +94,6 @@ const handleUpload = async () => {
     setLoading(false);
   }
 };
-
 
   const handleCancel = () => {
     setSelectedFiles([]);
@@ -376,7 +375,7 @@ export default function Dashboard() {
         });
         const data = await response.json();
         if (response.ok) {
-          navigate(data.user.role === "admin" ? "/home" : "/userhome");
+          navigate(data.user.role === "admin" ? "/dashboard" : "/userhome");
         }
       } catch (error) {
         console.error("Session check failed:", error);

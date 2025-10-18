@@ -186,8 +186,8 @@ const Sidebar = () => {
               </div>
             )}
             <div className="flex flex-col">
-              <p className="font-semibold">{user?.name || "Guest"}</p>
-              <p className="text-sm text-gray-500">{user?.role || "Unknown"}</p>
+              <p className="font-semibold">{user?.name}</p>
+              <p className="text-sm text-gray-500">{user?.role}</p>
             </div>
             {dropdownOpen ? (
               <FaAngleUp className="ml-auto text-gray-500" />
