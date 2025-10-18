@@ -45,7 +45,7 @@ const Sidebar = () => {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch("https://server-1-gjvd.onrender.com/api/user", {
+      const response = await fetch("https://server-1-gjvd.onrender.com/api/session", {
         credentials: "include",
       });
       if (!response.ok) throw new Error("Failed to fetch user data");
