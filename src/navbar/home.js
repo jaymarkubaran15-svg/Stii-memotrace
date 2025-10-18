@@ -192,8 +192,12 @@ const YearbookCard = ({ yearbook, setYearbooks }) => {
       .then((res) => res.json())
       .then((images) => {
         if (images.length > 0) {
-          setImageSrc(`https://server-1-gjvd.onrender.com/${images[0].file_path}`);
+          const firstImage = images[0].file_path;
+          setImageSrc(
+            firstImage.startsWith("http") ? firstImage : `https://server-1-gjvd.onrender.com/${firstImage}`
+          );
         }
+
       })
       .catch((err) => console.error("Error fetching images:", err))
       .finally(() => setLoading(false));
