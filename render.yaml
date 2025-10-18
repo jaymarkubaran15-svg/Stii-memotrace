@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: memotrace-stii
+    env: node
+    buildCommand: npm run build
+    startCommand: node server.js
+    staticPublishPath: build
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
