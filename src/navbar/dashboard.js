@@ -29,7 +29,7 @@ const Dashboard = () => {
         });
         const data = await response.json();
         if (response.ok) {
-          navigate(data.user.role === "admin" ? "https://server-1-gjvd.onrender.com/dashboard" : "https://server-1-gjvd.onrender.com/userhome");
+          navigate(data.user.role === "admin" ? "/dashboard" : "/userhome");
         }
       } catch (error) {
         console.error("Session check failed:", error);
