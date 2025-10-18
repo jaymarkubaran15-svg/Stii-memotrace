@@ -366,23 +366,6 @@ export default function Dashboard() {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const response = await fetch("https://server-1-gjvd.onrender.com/api/session", {
-          method: "GET",
-          credentials: "include",
-        });
-        const data = await response.json();
-        if (response.ok) {
-          navigate(data.user.role === "admin" ? "/dashboard" : "/userhome");
-        }
-      } catch (error) {
-        console.error("Session check failed:", error);
-      }
-    };
-    checkSession();
-  }, [navigate]);
 
   return (
     <div className="flex min-h-screen">
