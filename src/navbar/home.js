@@ -10,95 +10,88 @@ import { useNavigate } from "react-router-dom";
 const UploadYearbook = ({ setYearbooks }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [folderName, setFolderName] = useState("");
-  const [studentName, setstudentName] = useState(null);
   const [loading, setLoading] = useState(false); // ✅ loading state
-
   const [progress, setProgress] = useState(0);
 
-
   const handleFileSelect = (event) => {
-  const files = Array.from(event.target.files);
-  if (files.length > 0) {
-    const firstPath = files[0].webkitRelativePath || files[0].name;
-    const folder = firstPath.includes("/") ? firstPath.split("/")[0] : "UnnamedFolder";
-    setFolderName(folder);
-  }
-  setSelectedFiles(files);
-};
+    const files = Array.from(event.target.files);
+    if (files.length > 0) {
+      const firstPath = files[0].webkitRelativePath || files[0].name;
+      const folder = firstPath.includes("/") ? firstPath.split("/")[0] : "UnnamedFolder";
+      setFolderName(folder);
+    }
+    setSelectedFiles(files);
+  };
 
-
-const handleUpload = async () => {
-  if (!folderName || selectedFiles.length === 0 || !studentName) {
-    Swal.fire("Missing Information", "Please select a folder and a student name file.", "warning");
-    return;
-  }
-
-  setLoading(true);
-  setProgress(0);
-
-  try {
-    // 1️⃣  Get Cloudinary signature
-    const sigRes = await fetch(`https://server-1-gjvd.onrender.com/cloudinary-signature?folder=${folderName}`);
-    const { timestamp, signature, apiKey, cloudName } = await sigRes.json();
-
-    // 2️⃣  Upload all images directly to Cloudinary
-    const uploadedUrls = [];
-
-    for (let i = 0; i < selectedFiles.length; i++) {
-      const file = selectedFiles[i];
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("api_key", apiKey);
-      formData.append("timestamp", timestamp);
-      formData.append("signature", signature);
-      formData.append("folder", `yearbooks/${folderName}`);
-
-      const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await uploadRes.json();
-      uploadedUrls.push(data.secure_url);
-      setProgress(Math.round(((i + 1) / selectedFiles.length) * 100));
+  const handleUpload = async () => {
+    if (!folderName || selectedFiles.length === 0) {
+      Swal.fire("Missing Information", "Please select a folder to upload.", "warning");
+      return;
     }
 
-    // 3️⃣  Send metadata + student file + URLs to backend
-    const backendForm = new FormData();
-    backendForm.append("folderName", folderName);
-    backendForm.append("yearbookName", "Yearbook 2025");
-    backendForm.append("studentNames", studentName);
-    uploadedUrls.forEach((url) => backendForm.append("imageUrls", url));
+    setLoading(true);
+    setProgress(0);
 
-    const response = await fetch("https://server-1-gjvd.onrender.com/upload-yearbook", {
-      method: "POST",
-      body: backendForm,
-    });
+    try {
+      // 1️⃣  Get Cloudinary signature
+      const sigRes = await fetch(`https://server-1-gjvd.onrender.com/cloudinary-signature?folder=${folderName}`);
+      const { timestamp, signature, apiKey, cloudName } = await sigRes.json();
 
-    const result = await response.json();
-    Swal.fire("Success", result.message, "success");
+      // 2️⃣  Upload all images directly to Cloudinary
+      const uploadedUrls = [];
 
-    // Refresh yearbooks list
-    const res = await fetch("https://server-1-gjvd.onrender.com/yearbooks");
-    const data = await res.json();
-    setYearbooks(data);
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const file = selectedFiles[i];
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("api_key", apiKey);
+        formData.append("timestamp", timestamp);
+        formData.append("signature", signature);
+        formData.append("folder", `yearbooks/${folderName}`);
 
-    setSelectedFiles([]);
-    setFolderName("");
-    setstudentName(null);
+        const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+          method: "POST",
+          body: formData,
+        });
 
-  } catch (err) {
-    console.error("Upload failed:", err);
-    Swal.fire("Error", "Upload failed. Please try again.", "error");
-  } finally {
-    setLoading(false);
-  }
-};
+        const data = await uploadRes.json();
+        uploadedUrls.push(data.secure_url);
+        setProgress(Math.round(((i + 1) / selectedFiles.length) * 100));
+      }
+
+      // 3️⃣  Send metadata + URLs to backend
+      const backendForm = new FormData();
+      backendForm.append("folderName", folderName);
+      backendForm.append("yearbookName", "Yearbook 2025");
+      uploadedUrls.forEach((url) => backendForm.append("imageUrls", url));
+
+      const response = await fetch("https://server-1-gjvd.onrender.com/upload-yearbook", {
+        method: "POST",
+        body: backendForm,
+      });
+
+      const result = await response.json();
+      Swal.fire("Success", result.message, "success");
+
+      // Refresh yearbooks list
+      const res = await fetch("https://server-1-gjvd.onrender.com/yearbooks");
+      const data = await res.json();
+      setYearbooks(data);
+
+      setSelectedFiles([]);
+      setFolderName("");
+
+    } catch (err) {
+      console.error("Upload failed:", err);
+      Swal.fire("Error", "Upload failed. Please try again.", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleCancel = () => {
     setSelectedFiles([]);
     setFolderName("");
-    setstudentName(null);
   };
 
   return (
@@ -143,17 +136,6 @@ const handleUpload = async () => {
 
       {folderName && (
         <div className="mt-3 bg-white p-3 rounded-lg shadow-md">
-          <div className="mb-4">
-            <label className="block text-lg mb-1">Students Name:</label>
-            <input
-              type="file"
-              accept=".xlsx"
-              onChange={(e) => setstudentName(e.target.files[0])}
-              placeholder="Students Names"
-              className="w-full p-2 rounded border border-gray-300 text-black"
-            />
-          </div>
-
           <div className="flex justify-between items-center">
             <h3 className="font-semibold text-gray-700">📁 Folder: {folderName}</h3>
             <button

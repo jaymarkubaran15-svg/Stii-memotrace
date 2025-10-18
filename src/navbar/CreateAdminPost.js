@@ -32,7 +32,7 @@ const [eventTime, setEventTime] = useState("");
 
   // ✅ Load user session
   useEffect(() => {
-    fetch("/api/session", { credentials: "include" })
+    fetch("https://server-1-gjvd.onrender.com/api/session", { credentials: "include" })
       .then((res) => res.json())
       .then((data) => setUser(data.user))
       .catch(console.error);
@@ -136,8 +136,8 @@ const handlePostSubmit = async () => {
     // 🆕 Choose endpoint based on post type
     const endpoint =
       postType === "event"
-        ? "/api/events"
-        : "/api/posts";
+        ? "https://server-1-gjvd.onrender.com/api/events"
+        : "https://server-1-gjvd.onrender.com/api/posts";
 
     const res = await fetch(endpoint, {
       method: "POST",
