@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import NavLink from "./linkbar";
 import bg from "../src/assets/images/bg.png";
 import { useNavigate } from "react-router-dom";

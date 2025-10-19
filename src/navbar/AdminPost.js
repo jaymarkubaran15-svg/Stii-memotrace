@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaChevronLeft, FaChevronRight, FaTimes,FaPaperPlane, FaEllipsisV  } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -41,7 +41,7 @@ export default function PostsPage() {
   const messagesEndRef = useRef(null);
    const [activeMsgMenu, setActiveMsgMenu] = useState(null);
     const [confirmAction, setConfirmAction] = useState(null);
-    const { id } = useParams();
+    
 
   const navigate = useNavigate();
 

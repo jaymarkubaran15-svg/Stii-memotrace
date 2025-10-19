@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { PlusCircle, Save, Trash2 } from "lucide-react";
 import Sidebar from "./sidebar";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -11,11 +11,10 @@ export default function GTSPage() {
   const [data, setData] = useState({});
   const [expandedSections, setExpandedSections] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
-  const location = useLocation();
+
   const [showPreview, setShowPreview] = useState(false);
 
-  const isSurveyActive = location.pathname === "/gtsadmin";
+
 
   useEffect(() => {
     const saved = localStorage.getItem("ched_gts_dynamic");

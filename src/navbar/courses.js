@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Sidebar from "../navbar/sidebar";
-import { FaSearch } from "react-icons/fa";
-import AlumniCharts from './surveychart';
+
 import SurveyTable from './surveytable';
 import { CiCircleRemove } from "react-icons/ci";
 import Swal from 'sweetalert2';
@@ -13,9 +12,9 @@ const Courses = () => {
   const inputRef = useRef(null);
 
   const [courses, setCourses] = useState([]);
-  const [workFields, setWorkFields] = useState([]);
+  
   const [selectedCourse, setSelectedCourse] = useState("");
-  const [selectedWorkField, setSelectedWorkField] = useState("");
+ 
 
 
 
@@ -32,19 +31,8 @@ const Courses = () => {
       }
     };
 
-    const fetchWorkFields = async () => {
-      try {
-        const response = await fetch("/api/workfields");
-        if (!response.ok) throw new Error("Failed to fetch work fields");
-        const data = await response.json();
-        setWorkFields(data); 
-      } catch (error) {
-        console.error("Error fetching work fields:", error);
-      }
-    };
 
     fetchCourses();
-    fetchWorkFields();
   }, []);
 
   const handleAddTitle = (e) => {
@@ -72,7 +60,7 @@ const Courses = () => {
       return;
     }
 
-    const surveyData = { selectedCourse, selectedWorkField, workTitles };
+    const surveyData = { selectedCourse,  workTitles };
 
     try {
       const response = await fetch("/api/surveyop", {
