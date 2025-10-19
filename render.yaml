@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: memotrace-stii
+    name: stii-memotrace
     env: node
     buildCommand: npm run build
     startCommand: node server.js
