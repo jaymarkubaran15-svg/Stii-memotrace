@@ -149,10 +149,11 @@ export default function EditProfilePage({ onClose }) {
       alert("Failed to crop image. Please try again.");
     }
   };
-
-  const handleUserUpdate = async () => {
+const handleUserUpdate = async () => {
   try {
-     setIsSaving(true); 
+    setIsSaving(true);
+
+    // Check what has changed
     const hasProfileChanged = !!croppedImage;
     const hasInfoChanged =
       updatedUser.name !== user.name ||
@@ -161,8 +162,11 @@ export default function EditProfilePage({ onClose }) {
       updatedUser.email !== user.email ||
       updatedUser.address !== user.address;
 
-    if (!hasInfoChanged && !hasProfileChanged && !updatedUser.work) {
-         setIsSaving(false);
+    const hasWorkChanged = Array.isArray(updatedUser.work) && updatedUser.work.length > 0;
+    const hasEducationChanged = Array.isArray(updatedUser.education) && updatedUser.education.length > 0;
+
+    if (!hasInfoChanged && !hasProfileChanged && !hasWorkChanged && !hasEducationChanged) {
+      setIsSaving(false);
       return Swal.fire({
         icon: "info",
         title: "No Changes Detected",
@@ -170,6 +174,7 @@ export default function EditProfilePage({ onClose }) {
       });
     }
 
+    // Prepare form data
     const formData = new FormData();
     formData.append("name", updatedUser.name);
     formData.append("middlename", updatedUser.middlename);
@@ -179,7 +184,7 @@ export default function EditProfilePage({ onClose }) {
 
     if (updatedUser.email !== user.email) {
       if (!updatedUser.password) {
-           setIsSaving(false);
+        setIsSaving(false);
         return Swal.fire({
           icon: "warning",
           title: "Password Required",
@@ -191,12 +196,11 @@ export default function EditProfilePage({ onClose }) {
 
     if (hasProfileChanged) {
       const blob = await (await fetch(croppedImage)).blob();
-      const file = new File([blob], "profile.jpg", {
-        type: blob.type || "image/jpeg",
-      });
+      const file = new File([blob], "profile.jpg", { type: blob.type || "image/jpeg" });
       formData.append("profile", file);
     }
 
+    // Send update request
     const res = await fetch(`https://server-1-gjvd.onrender.com/api/users/${user.id}`, {
       method: "PUT",
       body: formData,
@@ -206,62 +210,92 @@ export default function EditProfilePage({ onClose }) {
     if (!res.ok) {
       const errorResult = await res.json().catch(() => ({}));
       const errorMessage = errorResult.message || "Failed to update user data.";
-         setIsSaving(false);
+      setIsSaving(false);
       return Swal.fire({ icon: "error", title: "Error", text: errorMessage });
     }
 
-    // ✅ Profile updated successfully
     const result = await res.json();
 
-    // ✅ Save work if present (only on Save Changes)
-    if (updatedUser.work && updatedUser.work.position && updatedUser.work.company) {
-      try {
-        const workRes = await fetch("https://server-1-gjvd.onrender.com/api/work", {
+    // Handle email verification if required
+    if (result.requiresVerification) {
+      const code = await Swal.fire({
+        title: "Enter Verification Code",
+        input: "text",
+        inputLabel: "Code sent to your new email",
+        inputPlaceholder: "Enter code",
+        showCancelButton: true,
+      });
+
+      if (code.isConfirmed) {
+        const confirmRes = await fetch("https://server-1-gjvd.onrender.com/confirm-email", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userId: user.id,
-            position: updatedUser.work.position,
-            company: updatedUser.work.company,
-            location: updatedUser.work.location,
-            startDate: updatedUser.work.startDate,
-            endDate: updatedUser.work.endDate,
-            description: updatedUser.work.description,
-            isCurrent: updatedUser.work.isCurrent,
-          }),
+          body: JSON.stringify({ userId: user.id, code: code.value }),
         });
+        const verifyResult = await confirmRes.json();
 
-        const workResult = await workRes.json();
-        if (!workRes.ok) throw new Error(workResult.message || "Failed to save work.");
-
-        console.log("✅ Work saved successfully:", workResult);
-      } catch (workErr) {
-        console.error("❌ Work save error:", workErr);
-        Swal.fire("Warning", "Profile saved, but failed to save work.", "warning");
+        if (!confirmRes.ok) {
+          Swal.fire("Error", verifyResult.message || "Failed to verify email.", "error");
+        } else {
+          Swal.fire("Success", verifyResult.message, "success");
+          await fetchUser(); // refresh frontend with updated email
+        }
       }
     }
 
-    Swal.fire({
-      icon: "success",
-      title: "Profile Updated",
-      text: "Your profile saved successfully!",
-    });
+    // Save all work entries
+    if (hasWorkChanged) {
+      for (const workItem of updatedUser.work) {
+        if (!workItem.position || !workItem.company) continue;
+
+        try {
+          const workRes = await fetch("https://server-1-gjvd.onrender.com/api/work", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId: user.id, ...workItem }),
+          });
+
+          const workResult = await workRes.json();
+          if (!workRes.ok) throw new Error(workResult.message || "Failed to save work.");
+        } catch (err) {
+          console.error("❌ Work save error:", err);
+          Swal.fire("Warning", "Profile saved, but failed to save some work entries.", "warning");
+        }
+      }
+    }
+
+    // Save all education entries
+    if (hasEducationChanged) {
+      for (const eduItem of updatedUser.education) {
+        if (!eduItem.programType || !eduItem.fieldOfStudy) continue;
+
+        try {
+          const eduRes = await fetch("https://server-1-gjvd.onrender.com/api/education", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId: user.id, ...eduItem }),
+          });
+
+          const eduResult = await eduRes.json();
+          if (!eduRes.ok) throw new Error(eduResult.message || "Failed to save education.");
+        } catch (err) {
+          console.error("❌ Education save error:", err);
+          Swal.fire("Warning", "Profile saved, but failed to save some education entries.", "warning");
+        }
+      }
+    }
+
+    // Final success
+    Swal.fire({ icon: "success", title: "Profile Updated", text: "Your profile saved successfully!" });
     onClose();
-    await fetchUser();
-    window.location.reload();
+    await fetchUser(); // refresh frontend
   } catch (error) {
     console.error("Error updating user:", error);
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: error.message || "An error occurred.",
-    });
-  }finally {
-    setIsSaving(false); // 🔴 always stop loading
+    Swal.fire({ icon: "error", title: "Error", text: error.message || "An error occurred." });
+  } finally {
+    setIsSaving(false);
   }
-
 };
-
 
   if (!user) {
     return (
